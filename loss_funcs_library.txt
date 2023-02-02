@@ -1,0 +1,1 @@
+{"MSE": "(y - y_hat)**2", "MAE" : "abs(y - y_hat)"}
