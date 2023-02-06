@@ -10,8 +10,8 @@ The full list of functions, their usage, as well as some examples can be found w
 
 List of available activation functions:
 
-- 'sigmoid' : $$ 1/1 + e^{-x} $$
-- 'tanh' : $$ tanh(x) $$
+- 'sigmoid' : $1/1 + e^{-x}$
+- 'tanh' : $tanh(x)$
 
 List of avaliable loss functions:
 
