@@ -10,8 +10,14 @@ The full list of functions, their usage, as well as some examples can be found w
 
 List of available activation functions:
 
-- 'sigmoid' : $1/1 + e^{-x}$
-- 'tanh' : $tanh(x)$
+- *sigmoid* : $\frac{1}{1 + e^{-x}}$
+- *tanh* : $tanh(x)$
+- *ReLU* : $\[ \begin{cases} 
+      0 & x\leq 0 \\
+      \frac{100-x}{100} & 0\leq x\leq 100 \\
+      0 & 100\leq x 
+   \end{cases}
+\]$
 
 List of avaliable loss functions:
 
