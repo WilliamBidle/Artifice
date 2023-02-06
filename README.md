@@ -40,15 +40,30 @@ $$tanh(x)$$
 
 $$f(x) = \begin{cases}
 x & \text{if } x \geq 0,\\
-0  & \text{if } x \le 0.
+0  & \text{if } x < 0.
 \end{cases}$$
 
 ### List of avaliable loss functions:
 
-- 'MSE' : 
+- Mean Squared Error ("MSE") : 
 
-$\sum_{i}(y - \hat{y})^2$
+$$\sum_{i}(y - \hat{y})^2$$
 
-- 'MAE' : 
+- Mean Absolute Error ("MAE") : 
 
-$\sum_{i}|y - \hat{y}|$
+$$\sum_{i}|y - \hat{y}|$$
+
+- "MAPE" : 
+$$100 * |\frac{y - y_hat}{y + y_hat}|$$
+
+- Mean Squared Logarithmic Error ("MSLE") : 
+
+$$(log(y + 1.) - log(y_hat + 1.))^2$$ 
+
+- Binary Cross-Entropy ("BCE") : 
+
+$$(\hat{y}*log(y) + (1 - \hat{y})*log(1 - y))$$
+
+- "Poisson" : 
+
+$$y - \hat{y} * log(y)$$
