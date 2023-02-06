@@ -54,16 +54,16 @@ $$\sum_{i}(y - \hat{y})^2$$
 $$\sum_{i}|y - \hat{y}|$$
 
 - "MAPE" : 
-$$100 * |\frac{y - y_hat}{y + y_hat}|$$
+$$100 * \sum_{i}|\frac{y - \hat{y}}{y + \hat{y}}|$$
 
 - Mean Squared Logarithmic Error ("MSLE") : 
 
-$$(log(y + 1.) - log(y_hat + 1.))^2$$ 
+$$\sum_{i}(log(y + 1.) - log(\hat{y} + 1.))^2$$ 
 
 - Binary Cross-Entropy ("BCE") : 
 
-$$(\hat{y}*log(y) + (1 - \hat{y})*log(1 - y))$$
+$$\sum_{i}(\hat{y}*log(y) + (1 - \hat{y})*log(1 - y))$$
 
 - "Poisson" : 
 
-$$y - \hat{y} * log(y)$$
+$$\sum_{i}y - \hat{y} * log(y)$$
