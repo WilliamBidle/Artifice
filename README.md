@@ -12,18 +12,9 @@ List of available activation functions:
 
 - *sigmoid* : $\frac{1}{1 + e^{-x}}$
 - *tanh* : $tanh(x)$
-- *ReLU* : f(n) =
-\begin{cases}
-n/2,  & \text{if $n$ is even} \\
-3n+1, & \text{if $n$ is odd}
-\end{cases}
+- *ReLU* : 
 
 List of avaliable loss functions:
 
--
--
-
-<script
-  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
-  type="text/javascript">
-</script>
+- *MSE* : $\sum_{i}(y - \hat{y})^2$
+- *MAE* : 
