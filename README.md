@@ -28,7 +28,7 @@ If there are no errors, then you have successfully installed Baby_TensorFlow! Th
 
 ### List of available activation functions:
 
-- 'sigmoid' : 
+- "sigmoid" : 
 
 $$\frac{1}{1 + e^{-x}}$$
 
@@ -46,5 +46,10 @@ x  & \text{if } x \in [-1, 1],\\
 
 ### List of avaliable loss functions:
 
-- 'MSE' : $\sum_{i}(y - \hat{y})^2$
-- 'MAE' : $\sum_{i}|y - \hat{y}|$
+- 'MSE' : 
+
+$\sum_{i}(y - \hat{y})^2$
+
+- 'MAE' : 
+
+$\sum_{i}|y - \hat{y}|$
