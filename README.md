@@ -1,4 +1,4 @@
-# Baby-TensorFlow
+# Baby TensorFlow (1.0)
 
 A homemade machine learning neural network architecture modeled after TensorFlow. 
 
