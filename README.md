@@ -30,9 +30,29 @@ If there are no errors, then you have successfully installed Baby_TensorFlow! Th
 
 - 'sigmoid' : $\frac{1}{1 + e^{-x}}$
 - 'tanh' : $tanh(x)$
-- *ReLU* : 
+- 'ReLU' : 
+
+f(x) = \begin{cases}
+-1 & \text{if } x \leq -1,\\
+x  & \text{if } x \in [-1, 1],\\
+1  & \text{if } x \geq 1.
+\end{cases}
+
+$f(x) = \begin{cases}
+-1 & \text{if } x \leq -1,\\
+x  & \text{if } x \in [-1, 1],\\
+1  & \text{if } x \geq 1.
+\end{cases}$
+
+$$f(x) = \begin{cases}
+-1 & \text{if } x \leq -1,\\
+x  & \text{if } x \in [-1, 1],\\
+1  & \text{if } x \geq 1.
+\end{cases}$$
+
+$f(x) = \begin{cases} -1 & \text{if } x \leq -1,\\ x  & \text{if } x \in [-1, 1],\\ 1  & \text{if } x \geq 1.\end{cases}$
 
 ### List of avaliable loss functions:
 
-- *MSE* : $\sum_{i}(y - \hat{y})^2$
-- *MAE* : $\sum_{i}|y - \hat{y}|$
+- 'MSE' : $\sum_{i}(y - \hat{y})^2$
+- 'MAE' : $\sum_{i}|y - \hat{y}|$
