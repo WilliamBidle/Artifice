@@ -40,7 +40,7 @@ $$tanh(x)$$
 
 $$f(x) = \begin{cases}
 x & \text{if } x \geq 0,\\
-x  & \text{if } x \l 0.
+0  & \text{if } x \le 0.
 \end{cases}$$
 
 ### List of avaliable loss functions:
