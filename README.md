@@ -12,10 +12,7 @@ List of available activation functions:
 
 - *sigmoid* : $\frac{1}{1 + e^{-x}}$
 - *tanh* : $tanh(x)$
-- *ReLU* : f(n) =
-\begin{cases} n/2, & \text{if 
- is even} \ 3n+1, & \text{if 
- is odd} \end{cases}$
+- *ReLU* : $f(n) = \begin{cases} n/2, & \text{if is even} \ 3n+1, & \text{if is odd} \end{cases}$
 
 List of avaliable loss functions:
 
