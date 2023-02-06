@@ -28,8 +28,8 @@ If there are no errors, then you have successfully installed Baby_TensorFlow! Th
 
 ### List of available activation functions:
 
-- *sigmoid* : $\frac{1}{1 + e^{-x}}$
-- *tanh* : $tanh(x)$
+- 'sigmoid' : $\frac{1}{1 + e^{-x}}$
+- 'tanh' : $tanh(x)$
 - *ReLU* : 
 
 ### List of avaliable loss functions:
