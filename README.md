@@ -1,6 +1,6 @@
 # Baby-TensorFlow
 
-A homemade machine learning neural network architecture modeled after TensorFlow.
+A homemade machine learning neural network architecture modeled after TensorFlow. 
 
 ### Installation
 
@@ -8,7 +8,7 @@ To install Baby_TensorFlow, use the command:
 
     pip install git+https://github.com/WilliamBidle/Baby-TensorFlow
 
-To make sure everything was installed properly, run the following code in your Python editor of choice:
+To test the installation, run the following code into your Python editor of choice:
 
     from Baby_TensorFlow import * 
     
@@ -17,7 +17,6 @@ To make sure everything was installed properly, run the following code in your P
 
     nn = NN(layer_sequence, loss_function)
 
-    # Avaliable Class Properties
     print('activation func library:\n', nn.activation_funcs_library)
     print('loss func library:\n', nn.loss_funcs_library)
     print('current weights:\n', nn.weights)
