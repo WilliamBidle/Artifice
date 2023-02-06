@@ -12,12 +12,13 @@ List of available activation functions:
 
 - *sigmoid* : $\frac{1}{1 + e^{-x}}$
 - *tanh* : $tanh(x)$
-- *ReLU* : $\[ \begin{cases} 
-      0 & x\leq 0 \\
-      \frac{100-x}{100} & 0\leq x\leq 100 \\
-      0 & 100\leq x 
-   \end{cases}
-\]$
+- *ReLU* : $Y(i,k) = 
+\left\{
+    \begin{array}{lr}
+        ||R_{k}-R_{i}||^{2}, & \text{if } i \neq k\\
+        ||\triangle_{i}||^{2}, & \text{if } i\leq k
+    \end{array}
+\right\} = yz$
 
 List of avaliable loss functions:
 
