@@ -39,9 +39,8 @@ $$tanh(x)$$
 - 'ReLU' : 
 
 $$f(x) = \begin{cases}
--1 & \text{if } x \leq -1,\\
-x  & \text{if } x \in [-1, 1],\\
-1  & \text{if } x \geq 1.
+x & \text{if } x \geq 0,\\
+x  & \text{if } x \l 0.
 \end{cases}$$
 
 ### List of avaliable loss functions:
