@@ -324,7 +324,7 @@ class NN:
 
     ##########################################################################################
     
-    def train(self, x_train, y_train, batch_size, epsilon = 1, visualize = False):
+    def train(self, x_train, y_train, batch_size = 1, epochs = 1, epsilon = 1, visualize = False):
             
         weights = self.weights # get the list of weights 
 
@@ -336,28 +336,33 @@ class NN:
         for i in range(len(weights)):
             weights_list[i] = [] # just a temporary blank array since training hasn't begun yet
         
-        # the training
-        for _input_, _label_ in tqdm(zip(x_train, y_train), total = len(x_train), desc = 'training'): # iterate through the inputs and labels
-
-            network_output, error = self.get_network_outputs(weights, _input_, _label_) # the current network output
-            
-            weight_updates, weights = self.__update_weights(weights, network_output, _label_)
-
-            for j in range(len(weights)):
-                weights_list[j].append(weight_updates[j])
+        #create epochs 
         
-            counter += 1
+        for i in range(epochs):
+        
+        
+            # the training
+            for _input_, _label_ in tqdm(zip(x_train, y_train), total = len(x_train), desc = 'Epoch %s'%str(i+1)): # iterate through the inputs and labels
 
-            if (counter) % batch_size == 0: 
+                network_output, error = self.get_network_outputs(weights, _input_, _label_) # the current network output
+
+                weight_updates, weights = self.__update_weights(weights, network_output, _label_)
+
                 for j in range(len(weights)):
+                    weights_list[j].append(weight_updates[j])
 
-                    weights[j] -= epsilon*np.average(np.array(weights_list[j]), axis = 0)
-                    weights_list[j] = []
+                counter += 1
 
-            error_list.append(error)
-                
-        self.weights = weights
-        self.training_err = error_list
+                if (counter) % batch_size == 0: 
+                    for j in range(len(weights)):
+
+                        weights[j] -= epsilon*np.average(np.array(weights_list[j]), axis = 0)
+                        weights_list[j] = []
+
+                error_list.append(error)
+
+            self.weights = weights
+            self.training_err = error_list
         
         if visualize == True:
             fig, ax = plt.subplots(figsize = (12,6))
