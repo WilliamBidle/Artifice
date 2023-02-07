@@ -1,6 +1,8 @@
 # Baby TensorFlow (version 1.0)
 
-A homemade machine learning neural network architecture modeled after TensorFlow, co-developed and co-written by William Bidle and Ilana Zane. 
+A homemade machine learning neural network architecture modeled after TensorFlow, co-developed and co-written by <a href="https://williambidle.github.io/" target = "_blank">William Bidle</a> and <a href="https://ilanazane.github.io/" target = "_blank">Ilana Zane</a>. 
+
+https://williambidle.github.io/
 
 ### Installation
 
