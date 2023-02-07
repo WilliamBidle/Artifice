@@ -45,11 +45,11 @@ x & \text{if } x \geq 0,\\
 
 ### List of avaliable loss functions:
 
-For a given network output vector, $\vec{y}$, and true value vector, $\vec{\hat{y}}$, $\hat{\vec{y}}$, with $N$ components each, different loss functions are definined by the following.
+For a given network output vector, $\vec{y}$, and true value vector, $\vec{y}^{true}$, with $N$ components each, different loss functions are definined by the following.
 
 - Mean Squared Error ("MSE") : 
 
-$$\sum_{i}^N(y_i - \hat{y}_i)^2$$
+$$\sum_{i}^N(y_i - \hat{y}_i^{true})^2$$
 
 - Mean Absolute Error ("MAE") : 
 
