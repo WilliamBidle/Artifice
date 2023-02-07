@@ -45,27 +45,27 @@ x & \text{if } x \geq 0,\\
 
 ### List of avaliable loss functions:
 
-For a given network output vector, $\vec{y}$, and true value vector, $\vec{y}^{true}$, with $N$ components each, different loss functions are definined by the following.
+For a given network output vector, $\vec{y}^{out}$, and true value vector, $\vec{y}^{true}$, with $N$ components each, different loss functions are definined by the following.
 
 - Mean Squared Error ("MSE") : 
 
-$$\sum_{i}^N(y_i - \hat{y}_i^{true})^2$$
+$$\sum_{i}^N(y_i^{out} - y_i^{true})^2$$
 
 - Mean Absolute Error ("MAE") : 
 
-$$\sum_{i}^N|y_i - \hat{y}_i|$$
+$$\sum_{i}^N|y_i^{out} - y_i^{true}|$$
 
 - "MAPE" : 
-$$100 * \sum_{i}^N|\frac{y_i - \hat{y}_i}{y_i + \hat{y}_i}|$$
+$$100 * \sum_{i}^N|\frac{y_i^{out} - y_i^{true}}{y_i^{out} + y_i^{true}}|$$
 
 - Mean Squared Logarithmic Error ("MSLE") : 
 
-$$\sum_{i}^N(log(y_i + 1.) - log(\hat{y_i} + 1.))^2$$ 
+$$\sum_{i}^N(log(y_i^{out} + 1) - log(y_i^{true} + 1))^2$$ 
 
 - Binary Cross-Entropy ("BCE") : 
 
-$$\sum_{i}^N(\hat{y_i}*log(y_i) + (1 - \hat{y}_i)*log(1 - y_i))$$
+$$\sum_{i}^N(y_i^{true}*log(y_i^{out}) + (1 - y_i^{true})*log(1 - y_i^{out}))$$
 
 - "Poisson" : 
 
-$$\sum_{i}^N(y_i - \hat{y}_i * log(y_i))$$
+$$\sum_{i}^N(y_i^{out} - y_i^{true} * log(y_i^{out}))$$
