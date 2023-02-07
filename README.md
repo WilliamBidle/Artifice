@@ -4,7 +4,7 @@
 
 ### Installation
 
-To get started with ***Baby_TensorFlow***, copy the following into your installation path of choice:
+To get started with ***Baby_TensorFlow***, copy the following command and paste it into your command line:
 
     pip install git+https://github.com/WilliamBidle/Baby-TensorFlow
 
@@ -24,7 +24,7 @@ To test the installation, run the following code into your Python editor of choi
     print('current loss function:\n', nn.loss_func_label, ':', nn.loss_func, '\n')
     print('traing error:\n', nn.training_err, '\n')
 
-If there are no errors, then you have successfully installed ***Baby_TensorFlow***! The full list of functions, their usage, as well as some examples can be found within the ***Baby_Tensorflow.py*** file. For an instructive example of how to use the software, please check out the example below.
+If there are no errors, then you have successfully installed ***Baby_TensorFlow***! The full list of functions, their usage, as well as some examples can be found within the ***Baby_Tensorflow.py*** file.
 
 ### List of available activation functions
 
@@ -72,6 +72,6 @@ $$\sum_{i}^N(y_i^{true}*log(y_i^{out}) + (1 - y_i^{true})*log(1 - y_i^{out}))$$
 
 $$\sum_{i}^N(y_i^{out} - y_i^{true} * log(y_i^{out}))$$
 
-### Example
+### Examples
 
-Coming Soon!
+Detailed examples on how to use ***Baby TensorFlow** can be found in the ***Examples.ipynb*** Jupyter Notebook, which includes demonstrations on image classification, picture recoloration, and autoencoder construction. 
