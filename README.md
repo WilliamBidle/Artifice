@@ -45,7 +45,7 @@ x & \text{if } x \geq 0,\\
 
 ### List of avaliable loss functions:
 
-For a given network output vector, $\vec{y}$, and true value vector, $\vec{\hat{y}}$, with $N$ components each, different loss functions are definined by the following.
+For a given network output vector, $\vec{y}$, and true value vector, $\vec{\hat{y}}$, $\hat{\vec{y}}$, with $N$ components each, different loss functions are definined by the following.
 
 - Mean Squared Error ("MSE") : 
 
