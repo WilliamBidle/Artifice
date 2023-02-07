@@ -47,23 +47,23 @@ x & \text{if } x \geq 0,\\
 
 - Mean Squared Error ("MSE") : 
 
-$$\sum_{i}(y - \hat{y})^2$$
+$$\sum_{i}^N(y_i - \hat{y}_i)^2$$
 
 - Mean Absolute Error ("MAE") : 
 
-$$\sum_{i}|y - \hat{y}|$$
+$$\sum_{i}^N|y_i - \hat{y}_i|$$
 
 - "MAPE" : 
-$$100 * \sum_{i}|\frac{y - \hat{y}}{y + \hat{y}}|$$
+$$100 * \sum_{i}^N|\frac{y_i - \hat{y}_i}{y_i + \hat{y}_i}|$$
 
 - Mean Squared Logarithmic Error ("MSLE") : 
 
-$$\sum_{i}(log(y + 1.) - log(\hat{y} + 1.))^2$$ 
+$$\sum_{i}^N(log(y_i + 1.) - log(\hat{y_i} + 1.))^2$$ 
 
 - Binary Cross-Entropy ("BCE") : 
 
-$$\sum_{i}(\hat{y}*log(y) + (1 - \hat{y})*log(1 - y))$$
+$$\sum_{i}^N(\hat{y_i}*log(y_i) + (1 - \hat{y}_i)*log(1 - y_i))$$
 
 - "Poisson" : 
 
-$$\sum_{i}y - \hat{y} * log(y)$$
+$$\sum_{i}^N(y_i - \hat{y}_i * log(y_i))$$
