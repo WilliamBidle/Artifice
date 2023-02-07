@@ -28,6 +28,8 @@ If there are no errors, then you have successfully installed Baby_TensorFlow! Th
 
 ### List of available activation functions:
 
+For a given value, $x$, different activation functions are definined by the following.
+
 - "sigmoid" : 
 
 $$\frac{1}{1 + e^{-x}}$$
