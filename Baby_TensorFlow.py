@@ -304,7 +304,7 @@ class NN:
     #################################### Public Methods ######################################
     ##########################################################################################
     
-    def get_network_outputs(self, weights, _input_, _label_):
+    def get_network_outputs(self, weights, _input_):
         
         activations = self.activation_funcs # get the list of desired activation functions
         
@@ -318,9 +318,15 @@ class NN:
             
             network_outputs.append(current_layer)
      
-        error = self.__eval_func(self.loss_func, [current_layer, _label_])
+        return network_outputs
 
-        return network_outputs, error
+    ##########################################################################################
+
+    def compute_error(self, _result_, _label_):
+        
+        error = self.__eval_func(self.loss_func, [_result_, _label_])
+
+        return error
 
     ##########################################################################################
     
@@ -344,7 +350,9 @@ class NN:
             # the training
             for _input_, _label_ in tqdm(zip(x_train, y_train), total = len(x_train), desc = 'Epoch %s'%str(i+1)): # iterate through the inputs and labels
 
-                network_output, error = self.get_network_outputs(weights, _input_, _label_) # the current network output
+                network_output = self.get_network_outputs(weights, _input_) # the current network output
+
+                error = self.compute_error(network_output[-1], _label_)
 
                 weight_updates, weights = self.__update_weights(weights, network_output, _label_)
 
@@ -378,24 +386,18 @@ class NN:
     
     ##########################################################################################
     
-    def evaluate(self, x_test, y_test):
+    def evaluate(self, x_test):
 
-        num_correct, num_wrong = 0, 0
+        results = []
 
-        for _input_, _label_ in tqdm(zip(x_test, y_test), desc = 'Evaluating Test Data', total = len(x_test)):
-            network_output, error = self.get_network_outputs(self.weights, _input_, _label_) # the current network output
-
-            ''' Debug '''
-
-            if np.argmax(network_output[-1]) == np.argmax(_label_):
-                num_correct += 1
-
-            else:
-                num_wrong += 1
-
-        print("% Correct:", 100*num_correct/len(x_test))
-        print("% Wrong:", 100*num_wrong/len(x_test))
-        
+        for _input_ in tqdm(x_test, desc = 'Evaluating Test Data', total = len(x_test)):
+            network_output = self.get_network_outputs(self.weights, _input_) # the current network output
+            results.append(network_output[-1])
+            
+        return results
+            
+    ##########################################################################################
+    
     def save_model(self, filename = 'Saved_Model'):
 
         save_path = 'Saved Models/' + filename
