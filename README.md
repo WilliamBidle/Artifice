@@ -74,4 +74,4 @@ $$\sum_{i}^N(y_i^{out} - y_i^{true} * log(y_i^{out}))$$
 
 ### Examples
 
-Detailed examples on how to use ***Baby TensorFlow*** can be found in the ***Examples.ipynb*** Jupyter Notebook, which includes demonstrations on image classification, picture recoloration, and autoencoder construction. 
+Detailed examples on how to use ***Baby TensorFlow*** can be found in the ***Tutorial.ipynb*** Jupyter Notebook, which includes demonstrations on image classification, picture recoloration, and autoencoder construction. 
