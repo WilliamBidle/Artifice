@@ -1,12 +1,12 @@
-# Baby TensorFlow (version 1.0)
+# Artifice
 
-***Baby TensorFlow*** is a homemade machine learning neural network architecture modeled after TensorFlow, co-developed and co-written by <a href="https://williambidle.github.io/" target = "_blank">William Bidle</a> and <a href="https://ilanazane.github.io/" target = "_blank">Ilana Zane</a>. 
+***Artifice*** is a homemade machine learning platform modeled after TensorFlow, co-developed and co-written by <a href="https://williambidle.github.io/" target = "_blank">William Bidle</a> and <a href="https://ilanazane.github.io/" target = "_blank">Ilana Zane</a>. 
 
 ### Installation
 
-To get started with ***Baby_TensorFlow***, copy the following command and paste it into your command line:
+To get started with ***Artifice***, copy the following command and paste it into your command line:
 
-    pip install git+https://github.com/WilliamBidle/Baby-TensorFlow
+    pip install Artifice
 
 To test the installation, run the following code into your Python editor of choice:
 
