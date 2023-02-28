@@ -1,0 +1,9 @@
+LICENSE
+README.md
+pyproject.toml
+src/Artifice/Artifice.py
+src/Artifice/__init__.py
+src/Artifice.egg-info/PKG-INFO
+src/Artifice.egg-info/SOURCES.txt
+src/Artifice.egg-info/dependency_links.txt
+src/Artifice.egg-info/top_level.txt
