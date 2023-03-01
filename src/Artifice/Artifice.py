@@ -108,7 +108,7 @@ class NN:
         
         '''
 
-        with open(func_file) as f: # open the desired file
+        with open(os.path.join(os.path.dirname(__file__), func_file)) as f: # open the desired file
             data = f.read()
       
         func_library = json.loads(data) # reconstruct the data as a dictionary

@@ -10,12 +10,12 @@ To get started with ***Artifice***, copy the following command and paste it into
 
 To test the installation, run the following code into your Python editor of choice:
 
-    from Baby_TensorFlow import * 
+    from Artifice import Artifice
     
     layer_sequence = [1,'ReLU', 2, 'sigmoid', 3]
     loss_function = 'MSLE'
 
-    nn = NN(layer_sequence, loss_function)
+    nn = Artifice.NN(layer_sequence, loss_function)
 
     print('activation func library:\n', nn.activation_funcs_library, '\n')
     print('loss func library:\n', nn.loss_funcs_library, '\n')
@@ -24,7 +24,7 @@ To test the installation, run the following code into your Python editor of choi
     print('current loss function:\n', nn.loss_func_label, ':', nn.loss_func, '\n')
     print('traing error:\n', nn.training_err, '\n')
 
-If there are no errors, then you have successfully installed ***Baby_TensorFlow***! The full list of functions, their usage, as well as some examples can be found within the ***Baby_Tensorflow.py*** file.
+If there are no errors, then you have successfully installed ***Artifice***! The full list of functions, their usage, as well as some examples can be found within the ***Artifice.py*** file.
 
 ### List of available activation functions
 
@@ -74,4 +74,4 @@ $$\sum_{i}^N(y_i^{out} - y_i^{true} * log(y_i^{out}))$$
 
 ### Examples
 
-Detailed examples on how to use ***Baby TensorFlow*** can be found in the ***Tutorial.ipynb*** Jupyter Notebook, which includes demonstrations on image classification, picture recoloration, and autoencoder construction. 
+Detailed examples on how to use ***Artifice*** can be found in the ***Artifice_Tutorial.ipynb*** Jupyter Notebook. 

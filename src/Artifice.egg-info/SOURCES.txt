@@ -1,8 +1,12 @@
 LICENSE
+MANIFEST.in
 README.md
 pyproject.toml
+setup.cfg
 src/Artifice/Artifice.py
 src/Artifice/__init__.py
+src/Artifice/activation_funcs_library.txt
+src/Artifice/loss_funcs_library.txt
 src/Artifice.egg-info/PKG-INFO
 src/Artifice.egg-info/SOURCES.txt
 src/Artifice.egg-info/dependency_links.txt
