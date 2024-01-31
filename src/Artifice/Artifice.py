@@ -8,7 +8,7 @@ import pickle
 
 import numpy as np
 import matplotlib.pyplot as plt
-from sympy import symbols, Symbol, parse_expr, lambdify
+import sympy
 from tqdm import tqdm
 
 
@@ -19,27 +19,6 @@ class NN:
 
     :param layer_sequence: a list containing the nodes per layer and correcponding activation functions between layers
     :param loss_function: the desired loss function to be used
-
-    ##################### Example ######################
-
-    layer_sequence = [1,'ReLU', 2]
-    loss_function = 'MSLE'
-
-    nn = NN(layer_sequence, loss_function)
-
-    # Avaliable Class Properties
-    print('activation func library:\n', nn.activation_funcs_library)
-    print()
-    print('loss func library:\n', nn.loss_funcs_library)
-    print()
-    print('current weights:\n', nn.weights)
-    print()
-    print('current activation functions:\n', nn.activation_funcs)
-    print()
-    print('current loss function:\n', nn.loss_func_label, ':', nn.loss_func)
-    print()
-    print('traing error:\n', nn.training_err)
-
     """
 
     def __init__(self, layer_sequence: list = [], loss_function: str = "MSE"):
@@ -92,19 +71,13 @@ class NN:
 
         self.training_err = None  # initialize the *training_err* property (will be set later once the model is trained)
 
-    def __load_func_libraries(self, func_file):
+    def __load_func_libraries(self, func_file: str) -> dict:
 
         """
-        ##################################################################
-            A method to load in dictionaries of available functions
-        ##################################################################
+        Loads in dictionaries of available functions.
 
-        INPUTS:
-        - func_file (string) : the filename containing the library of usable functions
-
-        OUTPUTS:
-        - func_library (dict) : a dictionary of the usable functions
-
+        :param func_file: the filename containing the library of usable functions.
+        :returns func_library: a dictionary of the usable functions.
         """
 
         with open(
@@ -116,14 +89,13 @@ class NN:
 
         return func_library
 
-    def __init_func(self, func_library, func_name):
+    def __init_func(
+        self, func_library: dict, func_name: str
+    ) -> sympy.core.symbol.Symbol:
 
         """
-        ##################################################################
-                Initialize a function from a function library
-        ##################################################################
+        Initialize a function from a function library
 
-        INPUTS:
         - func_library (dict) : a dictionary of the usable functions
         - func_name (string) : the name of the mathematical function to be initialized (e.g., 'sigmoid')
 
@@ -141,10 +113,10 @@ class NN:
                 % func_name
             )
 
-        x, y, y_hat = symbols(
+        x, y, y_hat = sympy.symbols(
             "x y y_hat", real=True
         )  # declare the variables of interest (x for activations, y and y_hat for loss)
-        expression = parse_expr(
+        expression = sympy.parse_expr(
             expression, local_dict={"x": x, "y": y, "y_hat": y_hat}
         )  # parse throught the expression
 
@@ -170,12 +142,12 @@ class NN:
         """
 
         if expression in self.activation_funcs:  # Evaluate Activation Functions
-            x = Symbol("x", real=True)  # the variable of interest
+            x = sympy.Symbol("x", real=True)  # the variable of interest
 
             if diff == True:  # differentiate only if the 'diff' flag is True
                 expression = expression.diff(x)
 
-            func = lambdify(
+            func = sympy.lambdify(
                 x, expression
             )  # allow the function to be evaluated from lists
             result = func(vals[0])  # evaluate the function at the given input
@@ -183,12 +155,12 @@ class NN:
             return result
 
         else:  # Evaluate Loss Functions
-            y, y_hat = symbols("y, y_hat", real=True)  # the variables of interest
+            y, y_hat = sympy.symbols("y, y_hat", real=True)  # the variables of interest
 
             if diff == True:  # differentiate only if the 'diff' flag is True
                 expression = expression.diff(y)
 
-                func = lambdify(
+                func = sympy.lambdify(
                     (y, y_hat), expression
                 )  # allow the function to be evaluated from lists
                 result = func(
@@ -196,7 +168,7 @@ class NN:
                 )  # evaluate the function at the given input
                 return result
 
-            func = lambdify(
+            func = sympy.lambdify(
                 (y, y_hat), expression
             )  # allow the function to be evaluated from lists
             result = func(vals[0], vals[1])  # evaluate the function at the given input
