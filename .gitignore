@@ -3,3 +3,5 @@
 .vscode
 __pycache__
 temp
+Artifice.egg-info
+DeepLeap.egg-info
