@@ -1,2 +1,2 @@
-include src/Artifice/activation_funcs_library.txt
-include src/Artifice/loss_funcs_library.txt
+include src/artifice/activation_funcs_library.txt
+include src/artifice/loss_funcs_library.txt
