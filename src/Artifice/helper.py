@@ -3,7 +3,7 @@
 import pickle
 import numpy as np
 
-from Artifice.Artifice import NN
+from artifice import NN
 
 
 def unison_shuffled_copies(a, b):

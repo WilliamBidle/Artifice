@@ -418,14 +418,21 @@ class NN:
 
         return results
 
-    def save_model(self, filename: str = "Saved_Model") -> None:
+    def save_model(self, out_dir: str, filename: str) -> None:
         """
         Save a model.
 
         :params filename:
         """
 
-        save_path = "Saved Models/" + filename
+        # Enforce trailing backslash to directory
+        out_dir = os.path.join(out_dir, "")
+
+        # Check if out_dir exists
+        if not os.path.exists(out_dir):
+            raise ValueError(f"Invalid path: {out_dir}.")
+
+        save_path = out_dir + filename
 
         to_save = [
             self.weights,
