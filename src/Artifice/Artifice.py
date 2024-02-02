@@ -5,6 +5,7 @@ __version__ = "dev"
 import os
 import json
 import pickle
+from typing import List, Union, Tuple
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -17,59 +18,62 @@ class NN:
     """
     Defines a neural network.
 
-    :param layer_sequence: a list containing the nodes per layer and correcponding activation functions between layers
-    :param loss_function: the desired loss function to be used
+    :param layer_sequence: A list containing the nodes per layer and correcponding activation
+    functions between layers.
+    :param loss_function: The desired loss function to be used.
     """
 
-    def __init__(self, layer_sequence: list = [], loss_function: str = "MSE"):
+    def __init__(self, layer_sequence: list = None, loss_function: str = "MSE"):
 
+        # Load in the function library
         self.activation_funcs_library = self.__load_func_libraries(
             "activation_funcs_library.txt"
-        )  # load in the function library
+        )
 
-        layers = layer_sequence[::2]  # separate out the layer information
-        if (
-            all(isinstance(item, int) for item in layers) == True
-        ):  # check that the declared number of nodes is an integer
-            layers = np.array(
-                layer_sequence[::2], dtype=int
-            )  # set the *layers* property
-            self.weights = self.__initialize_weights(
-                layers
-            )  # initialize the *weights* property based off of the desired layer sequence
+        # Separate out the layer information (every other element)
+        layers = layer_sequence[::2]
+
+        # check that the declared number of nodes is an integer
+        if all(isinstance(item, int) for item in layers) is True:
+            # set the 'layers' property
+            layers = np.array(layer_sequence[::2], dtype=int)
+
+            # initialize the *weights* property based off of the desired layer sequence
+            self.weights = self.__initialize_weights(layers)
+
         else:
-            raise Exception(
-                "Invalid Layer Sequence!"
-            )  # raise an exception if the input layer sequence is improperly defined
+            # raise an exception if the input layer sequence is improperly defined
+            raise ValueError("Invalid Layer Sequence!")
 
-        activation_funcs = layer_sequence[
-            1::2
-        ]  # separate out the activation function information
-        if (
-            all(isinstance(item, str) for item in activation_funcs) == True
-        ):  # check that the activation functions are strings
-            self.activation_funcs = []  # initialize the *activation_funcs* property
-            for i in range(
-                len(activation_funcs)
-            ):  # initialize each declared activation functions between layers
+        # separate out the activation function information
+        activation_funcs = layer_sequence[1::2]
+
+        # check that the activation functions are strings
+        if all(isinstance(item, str) for item in activation_funcs) is True:
+            # initialize the 'activation_funcs' property
+            self.activation_funcs = []
+
+            # initialize each declared activation functions between layers
+            for activation_func in activation_funcs:
                 self.activation_funcs.append(
-                    self.__init_func(self.activation_funcs_library, activation_funcs[i])
+                    self.__init_func(self.activation_funcs_library, activation_func)
                 )
 
         else:
-            raise Exception(
-                "Invalid Layer Sequence!"
-            )  # raise an exception if the input layer sequence is improperly defined
+            # raise an exception if the input layer sequence is improperly defined
+            raise ValueError("Invalid Layer Sequence!")
 
-        self.loss_funcs_library = self.__load_func_libraries(
-            "loss_funcs_library.txt"
-        )  # initialize the *loss_funcs_library* property
-        self.loss_func = self.__init_func(
-            self.loss_funcs_library, loss_function
-        )  # initialize the *loss_func* property
-        self.loss_func_label = loss_function  # initialize the *loss_func_label* property (used in plotting for now)
+        # initialize the *loss_funcs_library* property
+        self.loss_funcs_library = self.__load_func_libraries("loss_funcs_library.txt")
 
-        self.training_err = None  # initialize the *training_err* property (will be set later once the model is trained)
+        # initialize the *loss_func* property
+        self.loss_func = self.__init_func(self.loss_funcs_library, loss_function)
+
+        # initialize the *loss_func_label* property (used in plotting for now)
+        self.loss_func_label = loss_function
+
+        # initialize the *training_err* property (will be set later once the model is trained)
+        self.training_err = None
 
     def __load_func_libraries(self, func_file: str) -> dict:
 
@@ -80,12 +84,14 @@ class NN:
         :returns func_library: a dictionary of the usable functions.
         """
 
+        # open the desired file
         with open(
-            os.path.join(os.path.dirname(__file__), func_file)
-        ) as f:  # open the desired file
+            os.path.join(os.path.dirname(__file__), func_file), encoding="utf-8"
+        ) as f:
             data = f.read()
 
-        func_library = json.loads(data)  # reconstruct the data as a dictionary
+        # reconstruct the data as a dictionary
+        func_library = json.loads(data)
 
         return func_library
 
@@ -96,166 +102,160 @@ class NN:
         """
         Initialize a function from a function library
 
-        - func_library (dict) : a dictionary of the usable functions
-        - func_name (string) : the name of the mathematical function to be initialized (e.g., 'sigmoid')
-
-        OUTPUTS:
-        - expression (sympy.core.symbol.Symbol) : symbolic mathematical representation of 'func_name'
-
+        :param func_library: A dictionary of the usable functions.
+        :param func_name: The name of the mathematical function to be initialized (e.g., 'sigmoid').
+        :returns expression: Symbolic mathematical representation of 'func_name'.
         """
 
-        try:  # try to initialize the function
+        # try to initialize the function
+        try:
             expression = func_library[func_name]
 
-        except:  # if the function doesn't exist within the function library, return an exception
-            raise Exception(
-                "Desired function '%s' does not exist within the 'func_library.'"
-                % func_name
-            )
+        # if the function doesn't exist within the function library, return an exception
+        except Exception as exc:
+            raise ValueError(
+                f"Desired function '{func_name}' does not exist within the 'func_library.'"
+            ) from exc
 
-        x, y, y_hat = sympy.symbols(
-            "x y y_hat", real=True
-        )  # declare the variables of interest (x for activations, y and y_hat for loss)
+        # declare the variables of interest (x for activations, y and y_hat for loss)
+        x, y, y_hat = sympy.symbols("x y y_hat", real=True)
+
+        # parse throught the expression
         expression = sympy.parse_expr(
             expression, local_dict={"x": x, "y": y, "y_hat": y_hat}
-        )  # parse throught the expression
+        )
 
         return expression
 
-    def __eval_func(self, expression, vals, diff=False):
+    def __eval_func(
+        self, expression: sympy.core.symbol.Symbol, vals: List[List], diff: bool = False
+    ) -> Union[float, np.ndarray]:
 
         """
-        ##################################################################
-                        Initialize an activation function
-        ##################################################################
+        Initialize an activation function.
 
-        INPUTS:
-        - expression (sympy.core.symbol.Symbol) : symbolic mathematical representation of 'func'
-        - vals (2D list) : the values to evaluate 'expression' with
-            |
-             ---> 1 sub-list for activation functions (x information), 2 sub-lists for loss functions (y, y_hat information)
-        - diff (Boolean) : whether or not to evaluate the derivitive of 'expression' at 'vals
-
-        OUTPUTS:
-        - result (if diff = False ---> Float, if diff = True ---> NumPy 1D array) : evaluation of 'expression' at '_input_'
-
+        :param expression: Symbolic mathematical representation of 'func'.
+        :param vals: The values to evaluate 'expression' with - 1 sub-list for activation functions
+        (x information), 2 sub-lists for loss functions (y, y_hat information).
+        :param diff: Whether or not to evaluate the derivitive of 'expression' at 'vals'.
+        :returns result: evaluation of 'expression' at '_input_' - if diff = False -> Float,
+        if diff = True -> np.ndarray.
         """
 
-        if expression in self.activation_funcs:  # Evaluate Activation Functions
-            x = sympy.Symbol("x", real=True)  # the variable of interest
+        # Evaluate Activation Functions
+        if expression in self.activation_funcs:
 
-            if diff == True:  # differentiate only if the 'diff' flag is True
+            # the variable of interest
+            x = sympy.Symbol("x", real=True)
+
+            # differentiate only if the 'diff' flag is True
+            if diff is True:
                 expression = expression.diff(x)
 
-            func = sympy.lambdify(
-                x, expression
-            )  # allow the function to be evaluated from lists
-            result = func(vals[0])  # evaluate the function at the given input
+            # allow the function to be evaluated from lists
+            func = sympy.lambdify(x, expression)
 
-            return result
+            # evaluate the function at the given input
+            result = func(vals[0])
 
-        else:  # Evaluate Loss Functions
-            y, y_hat = sympy.symbols("y, y_hat", real=True)  # the variables of interest
+        # Evaluate Loss Functions
+        else:
 
-            if diff == True:  # differentiate only if the 'diff' flag is True
+            # the variables of interest
+            y, y_hat = sympy.symbols("y, y_hat", real=True)
+
+            # differentiate only if the 'diff' flag is True
+            if diff is True:
                 expression = expression.diff(y)
 
-                func = sympy.lambdify(
-                    (y, y_hat), expression
-                )  # allow the function to be evaluated from lists
-                result = func(
-                    vals[0], vals[1]
-                )  # evaluate the function at the given input
-                return result
+                # allow the function to be evaluated from lists
+                func = sympy.lambdify((y, y_hat), expression)
 
-            func = sympy.lambdify(
-                (y, y_hat), expression
-            )  # allow the function to be evaluated from lists
-            result = func(vals[0], vals[1])  # evaluate the function at the given input
-            return sum(result)
+                # evaluate the function at the given input
+                result = func(vals[0], vals[1])
 
-    def __initialize_weights(self, layers):
+            else:
+
+                # allow the function to be evaluated from lists
+                func = sympy.lambdify((y, y_hat), expression)
+
+                # evaluate the function at the given input
+                result = sum(func(vals[0], vals[1]))
+
+        return result
+
+    def __initialize_weights(self, layers: np.ndarray) -> List[np.ndarray]:
 
         """
-        ##################################################################
-                    Initialize the weights of the network
-        ##################################################################
+        Initialize the weights of the network.
 
-        INPUTS:
-        - layers (1D Numpy Array) : an array containing the layer information of the network
-
-        OUTPUTS:
-        - weights (3D list) : list containing the (potentially different sized) 2D weight arrays between the different layers
-
+        :params layers: An array containing the layer information of the network.
+        :returns weights: List containing the 2D weight arrays between the different layers.
         """
 
         layers_reorganized = np.flip(
             layers.repeat(2)[1:-1].reshape(len(layers) - 1, 2), axis=1
         )
 
-        weights = []  # initialize the list of the weights between different layers
-        for i in range(len(layers_reorganized)):
-            weight = np.random.randn(
-                layers_reorganized[i][0], layers_reorganized[i][1] + 1
-            )  # include bias vector with the '+ 1'
-            weights.append(
-                weight * np.sqrt(2 / layers_reorganized[i][1])
-            )  # HE initialization for weights
+        # initialize the list of the weights between different layers
+        weights = []
+
+        for layer_reorganized in layers_reorganized:
+            # include bias vector with the '+ 1'
+            weight = np.random.randn(layer_reorganized[0], layer_reorganized[1] + 1)
+
+            # HE initialization for weights
+            weights.append(weight * np.sqrt(2 / layer_reorganized[1]))
 
         return weights
 
-    def __update_weights(self, weights, layer_values, _label_):
+    def __update_weights(
+        self, weights: List[np.ndarray], layer_values: List[List], _label_: np.ndarray
+    ) -> Tuple[List[np.ndarray], List[np.ndarray]]:
 
         """
-        ##################################################################
-                        Update the weights of the network
-        ##################################################################
+        Update the weights of the network.
 
-        INPUTS:
-        - weights (3D list) : list containing the (potentially different sized) 2D weight arrays between the different layers
-        - layer_values (2D list) : list containing the values of each layer for a given input value (see method 'get_network_outputs' below)
-        - _label_ (1D NumPy Array) : array representation for the current label (usually one hot ecoded, see method 'One_Hot_Encode' below)
-
-        OUTPUTS:
-        - weight_updates, weights (3D list) : list containing the updated 2D weight arrays between the different layers
-        - weights (3D list) : list containing the original 2D weight arrays between the different layers
-
+        :params weights: List containing the 2D weight arrays between the different layers.
+        :params layer_values: List containing the values of each layer for a given input value.
+        :params _label_: Array representation for the current label, usually one hot ecoded.
+        :returns weight_updates: List of updated 2D weight arrays between the different layers.
+        :returns weights: List of original 2D weight arrays between the different layers.
         """
 
-        activations = (
-            self.activation_funcs
-        )  # get the list of desired activation functions
+        # get the list of desired activation functions
+        activations = self.activation_funcs
 
-        weight_updates = (
-            weights.copy()
-        )  # make a copy of the weights so they aren't changed
+        # make a copy of the weights so they aren't changed
+        weight_updates = weights.copy()
 
+        # blue in notes
         blue = np.diag(
             self.__eval_func(self.loss_func, [layer_values[-1], _label_], diff=True)
-        )  # blue in notes
+        )
 
-        layer_output = np.dot(
-            weights[-1], np.concatenate((layer_values[-2], [1]))
-        )  # need to add an extra component to input for bias
-        red = self.__eval_func(
-            activations[-1], [layer_output], diff=True
-        )  # red in notes
+        # need to add an extra component to input for bias
+        layer_output = np.dot(weights[-1], np.concatenate((layer_values[-2], [1])))
 
-        for i in range(
-            len(weights), 0, -1
-        ):  # index through each weight (work backwards)
+        # red in notes
+        red = self.__eval_func(activations[-1], [layer_output], diff=True)
 
-            pink = np.concatenate((layer_values[i - 1], [1]))  # pink in notes
+        # index through each weight (work backwards)
+        for i in range(len(weights), 0, -1):
 
-            grad = np.matmul(blue, np.outer(red, pink))  # first two terms in gradient
+            # pink in notes
+            pink = np.concatenate((layer_values[i - 1], [1]))
 
-            for j in range(
-                len(weights), i, -1
-            ):  # look forwards through each weight (only if there are forward weights)
+            # first two terms in gradient
+            grad = np.matmul(blue, np.outer(red, pink))
 
-                orange = np.transpose(weights[j - 1])  # orange in notes
-                """ Debug """
+            # look forwards through each weight (only if there are forward weights)
+            for j in range(len(weights), i, -1):
 
+                # orange in notes
+                orange = np.transpose(weights[j - 1])
+
+                # green in notes
                 green = np.diag(
                     self.__eval_func(
                         activations[j - 1],
@@ -267,49 +267,78 @@ class NN:
                         ],
                         diff=True,
                     )
-                )  # green in notes
-                bias_vec = np.ones(
-                    (len(green), 1)
-                )  # add on the bias vector to make sure dimensions work properly
-                green = np.hstack((green, bias_vec))  # incorperate the bias
+                )
 
-                grad = np.matmul(
-                    green, np.matmul(orange, grad)
-                )  # now multiply the rest to grad
+                # add on the bias vector to make sure dimensions work properly
+                bias_vec = np.ones((len(green), 1))
 
-            weight_updates[i - 1] = grad  # record the change in weight
+                # incorperate the bias
+                green = np.hstack((green, bias_vec))
+
+                # now multiply the rest to grad
+                grad = np.matmul(green, np.matmul(orange, grad))
+
+            # record the change in weight
+            weight_updates[i - 1] = grad
 
         return weight_updates, weights
 
-    def get_network_outputs(self, weights, _input_):
+    def get_network_outputs(
+        self, weights: List[np.ndarray], _input_: np.ndarray
+    ) -> np.ndarray:
+        """
+        Initialize the weights of the network.
 
-        activations = (
-            self.activation_funcs
-        )  # get the list of desired activation functions
+        :params weights: List containing the 2D weight arrays between the different layers.
+        :params _inputs_: Input layer to the network.
+        :returns network_outputs: Output layer of the network.
+        """
 
+        # get the list of desired activation functions
+        activations = self.activation_funcs
+
+        # add the first layer to the list
         current_layer = _input_
-        network_outputs = [current_layer]  # add the first layer to the list
+        network_outputs = [current_layer]
 
-        for i in range(len(weights)):
+        for index, weight in enumerate(weights):
 
-            layer_output = np.dot(
-                weights[i], np.concatenate((current_layer, [1]))
-            )  # need to add an extra component to input for bias
-            current_layer = self.__eval_func(activations[i], [layer_output], diff=False)
+            # need to add an extra component to input for bias
+            layer_output = np.dot(weight, np.concatenate((current_layer, [1])))
+
+            current_layer = self.__eval_func(
+                activations[index], [layer_output], diff=False
+            )
 
             network_outputs.append(current_layer)
 
         return network_outputs
 
-    def compute_error(self, _result_, _label_):
+    def compute_error(self, _result_: np.ndarray, _label_: np.ndarray) -> float:
+        """
+        Compute the error between the neural network's output and expected value.
 
+        :params _result_: Output layer of the network.
+        :params _label_: Expected result.
+        :returns error: The error of the network.
+        """
         error = self.__eval_func(self.loss_func, [_result_, _label_])
 
         return error
 
-    def train(
+    def train(  # pylint: disable=too-many-arguments, too-many-locals
         self, x_train, y_train, batch_size=1, epochs=1, epsilon=1, visualize=False
-    ):
+    ) -> None:
+        """
+        Train a model.
+
+        :params x_train:
+        :params y_train:
+        :params batch_size:
+        :params epochs:
+        :params epsilon:
+        :params visualize:
+        """
 
         weights = self.weights  # get the list of weights
 
@@ -320,19 +349,17 @@ class NN:
         weights_list = (
             {}
         )  # create a dictionary to keep track of the weight updates (batch size)
-        for i in range(len(weights)):
-            weights_list[
-                i
-            ] = []  # just a temporary blank array since training hasn't begun yet
 
-        # create epochs
+        # just a temporary blank array since training hasn't begun yet
+        for i in range(len(weights)):
+            weights_list[i] = []
 
         for i in range(epochs):
 
-            # the training
+            # iterate through the inputs and labels
             for _input_, _label_ in tqdm(
-                zip(x_train, y_train), total=len(x_train), desc="Epoch %s" % str(i + 1)
-            ):  # iterate through the inputs and labels
+                zip(x_train, y_train), total=len(x_train), desc=f"Epoch {str(i + 1)}"
+            ):
 
                 network_output = self.get_network_outputs(
                     weights, _input_
@@ -350,43 +377,53 @@ class NN:
                 counter += 1
 
                 if (counter) % batch_size == 0:
-                    for j in range(len(weights)):
+                    for index, weight in enumerate(weights):
 
-                        weights[j] -= epsilon * np.average(
-                            np.array(weights_list[j]), axis=0
+                        weights[index] = weight - epsilon * np.average(
+                            np.array(weights_list[index]), axis=0
                         )
-                        weights_list[j] = []
+                        weights_list[index] = []
 
                 error_list.append(error)
 
             self.weights = weights
             self.training_err = error_list
 
-        if visualize == True:
-            fig, ax = plt.subplots(figsize=(12, 6))
+        if visualize is True:
+            _, ax = plt.subplots(figsize=(12, 6))
 
             ax.plot(self.training_err)  # to visualize error over time
 
             ax.set_xlabel("Training Sample", fontsize=14)
-            ax.set_ylabel("%s Error" % self.loss_func_label, fontsize=14)
+            ax.set_ylabel(f"{self.loss_func_label} Error", fontsize=14)
 
             ax.grid(linestyle="--")
 
             plt.show()
 
     def evaluate(self, x_test):
+        """
+        Evaluate a model.
+
+        :params x_test:
+        :returns results:
+        """
 
         results = []
 
         for _input_ in tqdm(x_test, desc="Evaluating Test Data", total=len(x_test)):
-            network_output = self.get_network_outputs(
-                self.weights, _input_
-            )  # the current network output
+            # the current network output
+            network_output = self.get_network_outputs(self.weights, _input_)
             results.append(network_output[-1])
 
         return results
 
-    def save_model(self, filename="Saved_Model"):
+    def save_model(self, filename: str = "Saved_Model") -> None:
+        """
+        Save a model.
+
+        :params filename:
+        """
 
         save_path = "Saved Models/" + filename
 
@@ -398,48 +435,5 @@ class NN:
             pickle.dump(to_save, fp)
 
         print()
-        print("Model saved at %s" % save_path)
+        print(f"Model saved at '{save_path}'")
         print()
-
-
-def unison_shuffled_copies(a, b):
-    assert len(a) == len(b)
-    p = np.random.permutation(len(a))
-    return a[p], b[p]
-
-
-def One_Hot_Encode(labels):
-    num_unique_elements = np.unique(labels)
-
-    dic = {}
-    counter = 0
-    for i in num_unique_elements:
-        if i in dic:
-            pass
-        else:
-            dic[i] = counter
-            counter += 1
-
-    encoded_labels = np.zeros((len(labels), len(num_unique_elements)))
-
-    for i in range(len(labels)):
-        encoded_labels[i][dic[labels[i]]] = 1.0
-
-    return encoded_labels
-
-
-def load_model(filename="Saved_Model"):
-
-    load_path = "Saved Models/" + filename
-
-    with open(load_path, "rb") as fp:  # Unpickling
-        loaded = pickle.load(fp)
-
-    weights = loaded[0]
-    activations = loaded[1]
-
-    nn = NN()  # initialize a blank Neural Network
-    nn.weights = weights
-    nn.activation_funcs = activations
-
-    return nn
