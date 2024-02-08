@@ -1,21 +1,35 @@
 """ List of helper functions. """
 
 import pickle
+from typing import Tuple
 import numpy as np
 
-from artifice.artifice import NN
+from artifice.network import NN
 
 
-def unison_shuffled_copies(a, b):
+def apply_random_permutation(
+    array_1: np.ndarray, array_2: np.ndarray
+) -> Tuple[np.ndarray, np.ndarray]:
     """
-    ???.
+    Perform the same random permutation operation on two arrays.
 
-    :params a:
-    :params b:
+    :params array_1: First array to permute.
+    :params array_2: Second array to permute.
+    :returns: Permuted arrays.
     """
-    assert len(a) == len(b)
-    p = np.random.permutation(len(a))
-    return a[p], b[p]
+
+    # Check that both arrays have same
+    if len(array_1) != len(array_2):
+        raise ValueError("Both arrays must be the same length.")
+
+    # Get random permutation
+    p = np.random.permutation(len(array_1))
+
+    # Apply random permutation
+    array_1 = array_1[p]
+    array_2 = array_2[p]
+
+    return array_1, array_2
 
 
 def one_hot_encode(labels):
