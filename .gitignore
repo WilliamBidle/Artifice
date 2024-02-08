@@ -5,3 +5,5 @@ __pycache__
 temp
 Artifice.egg-info
 DeepLeap.egg-info
+.pytest_cache
+.coverage
